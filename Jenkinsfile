@@ -2,14 +2,13 @@ pipeline {
     agent any
 
     tools {
-        maven "Maven"
-        jdk "JDK"
+        maven 'Maven'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Disha-L12/MyMavenWebApp.git'
+                git 'https://github.com/Mithali-gonchikar/MyMavenWebApp.git'
             }
         }
 
@@ -19,10 +18,25 @@ pipeline {
             }
         }
 
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+            }
+        }
+
         stage('Deploy') {
             steps {
-                echo 'Deploying to Tomcat...'
+                sh 'echo "Deploy step here"'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build and deployment successful!'
+        }
+        failure {
+            echo 'Build failed!'
         }
     }
 }
